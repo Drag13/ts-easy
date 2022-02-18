@@ -30,7 +30,7 @@ const userMapper = (data) => ({
 });
 
 (async function () {
-  const result = await fetchApi<{ fullName: string }>(
+  const result = await fetchApi(
     API.USER,
     {
       method: "POST",
