@@ -5,21 +5,23 @@ interface IAppRequestInit extends RequestInit {
   body: any;
 }
 
-async function fetchApi<T>(url, options: IAppRequestInit, mapper: (data: any) => T): Promise<T> {
-  if (options.body && typeof options.body !== "string") {
-    options.body = JSON.stringify(options.body);
+async function fetchApi<T>(url, options, mapper: (data: any) => T): Promise<T> {
+  const fetchOptions = options ? { ...options } : {};
+
+  if (fetchOptions.body && typeof fetchOptions.body !== "string") {
+    fetchOptions.body = JSON.stringify(fetchOptions.body);
   }
 
-  if (!options.headers) {
-    options.headers = {};
+  if (!fetchOptions.headeres) {
+    fetchOptions.headers = {};
   }
 
-  if (!options.headers["Content-Type"]) {
-    options.headers["Content-Type"] = "application/json";
+  if (!fetchOptions.headers["Content-Type"]) {
+    fetchOptions.headers["Content-Type"] = "application/json";
   }
 
-  const response = await fetch(url, options).then((x) => x.json());
-  return typeof mapper === "function" ? mapper(response) : response;
+  const response = await fetch(url, fetchOptions).then((x) => x.json());
+  return mapper(response);
 }
 
 const userMapper = (data) => ({
@@ -28,7 +30,7 @@ const userMapper = (data) => ({
 });
 
 (async function () {
-  const result = await fetchApi<{ fullName: string }>(
+  const result = await fetchApi(
     API.USER,
     {
       method: "POST",

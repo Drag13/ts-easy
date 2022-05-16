@@ -3,21 +3,21 @@ import fetch from "cross-fetch";
 const API = { USER: `http://localhost:4000/user` };
 
 async function fetchApi<T>(url, options, mapper): Promise<T> {
-  options = options ?? {};
+  const fetchOptions = options ? { ...options } : {};
 
-  if (options.body && typeof options.body !== "string") {
-    options.body = JSON.stringify(options.body);
+  if (fetchOptions.body && typeof fetchOptions.body !== "string") {
+    fetchOptions.body = JSON.stringify(fetchOptions.body);
   }
 
-  if (!options.headeres) {
-    options.headers = {};
+  if (!fetchOptions.headeres) {
+    fetchOptions.headers = {};
   }
 
-  if (!options.headers["Content-Type"]) {
-    options.headers["Content-Type"] = "application/json";
+  if (!fetchOptions.headers["Content-Type"]) {
+    fetchOptions.headers["Content-Type"] = "application/json";
   }
 
-  const response = await fetch(url, options).then((x) => x.json());
+  const response = await fetch(url, fetchOptions).then((x) => x.json());
   return typeof mapper === "function" ? mapper(response) : response;
 }
 
@@ -27,7 +27,7 @@ const userMapper = (data) => ({
 });
 
 (async function () {
-  const result = await fetchApi<{ fullName: string }>(
+  const result = await fetchApi(
     API.USER,
     {
       method: "POST",
@@ -38,5 +38,3 @@ const userMapper = (data) => ({
 
   console.log(result);
 })();
-
-export default 0;

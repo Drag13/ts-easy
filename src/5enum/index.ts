@@ -1,26 +1,23 @@
 import fetch from "cross-fetch";
-enum API {
-  USER = `http://localhost:4000/user`,
-}
 
-interface IAppRequestInit extends Omit<RequestInit, "body"> {
-  body: any;
-}
+const API = { USER: `http://localhost:4000/user` };
 
-async function fetchApi<T>(url: API, options: IAppRequestInit, mapper: (data: any) => T): Promise<T> {
-  if (options.body && typeof options.body !== "string") {
-    options.body = JSON.stringify(options.body);
+async function fetchApi(url, options, mapper) {
+  const fetchOptions = options ? { ...options } : {};
+
+  if (fetchOptions.body && typeof fetchOptions.body !== "string") {
+    fetchOptions.body = JSON.stringify(fetchOptions.body);
   }
 
-  if (!options.headers) {
-    options.headers = {};
+  if (!fetchOptions.headeres) {
+    fetchOptions.headers = {};
   }
 
-  if (!options.headers["Content-Type"]) {
-    options.headers["Content-Type"] = "application/json";
+  if (!fetchOptions.headers["Content-Type"]) {
+    fetchOptions.headers["Content-Type"] = "application/json";
   }
 
-  const response = await fetch(url, options).then((x) => x.json());
+  const response = await fetch(url, fetchOptions).then((x) => x.json());
   return typeof mapper === "function" ? mapper(response) : response;
 }
 
@@ -41,5 +38,3 @@ const userMapper = (data) => ({
 
   console.log(result);
 })();
-
-export default 0;

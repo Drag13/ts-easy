@@ -21,5 +21,5 @@ export async function fetchApi<T>(url: API, options: IAppRequestInit, mapper: (d
   }
 
   const response = await fetch(url, options).then((x) => x.json());
-  return typeof mapper === "function" ? mapper(response) : response;
+  return mapper(response);
 }

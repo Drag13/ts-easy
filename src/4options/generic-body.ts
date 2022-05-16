@@ -1,12 +1,12 @@
 import fetch from "cross-fetch";
 const API = { USER: `http://localhost:4000/user` };
 
-interface IAppRequestInit<T> extends Omit<RequestInit, "body"> {
-  body: T;
+interface IAppRequestInit<TBody extends object> extends Omit<RequestInit, "body"> {
+  body: TBody;
 }
 
-async function fetchApi<T, D>(url, options: IAppRequestInit<D>, mapper: (data: any) => T): Promise<T> {
-  const body = JSON.stringify(options.body);
+async function fetchApi<TBody extends object, TResult>(url, options: IAppRequestInit<TBody>, mapper: (data: any) => TResult): Promise<TResult> {
+  const fetchOptions = {...options, body: JSON.stringify(options.body)}
 
   if (!options.headers) {
     options.headers = {};
@@ -16,8 +16,8 @@ async function fetchApi<T, D>(url, options: IAppRequestInit<D>, mapper: (data: a
     options.headers["Content-Type"] = "application/json";
   }
 
-  const response = await fetch(url, { ...options, body }).then((x) => x.json());
-  return typeof mapper === "function" ? mapper(response) : response;
+  const response = await fetch(url, fetchOptions).then((x) => x.json());
+  return mapper(response);
 }
 
 const userMapper = (data) => ({
@@ -26,7 +26,7 @@ const userMapper = (data) => ({
 });
 
 (async function () {
-  const result = await fetchApi<{ fullName: string }, { id: number }>(
+  const result = await fetchApi<{id: number}, ReturnType<typeof userMapper>>(
     API.USER,
     {
       method: "POST",
@@ -35,7 +35,7 @@ const userMapper = (data) => ({
     userMapper
   );
 
-  console.log(result);
+  console.log(result.fullName);
 })();
 
 export default 0;
