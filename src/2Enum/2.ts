@@ -1,8 +1,10 @@
 import fetch from "cross-fetch";
 
-const API = { USER: `http://localhost:4000/user` };
+enum API {
+  USER = `http://localhost:4000/user`,
+}
 
-async function fetchApi<T>(url, options, mapper): Promise<T> {
+async function fetchApi(url: API, options, mapper) {
   const fetchOptions = options ? { ...options } : {};
 
   if (fetchOptions.body && typeof fetchOptions.body !== "string") {
