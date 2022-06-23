@@ -118,7 +118,7 @@ interface IAppRequestInit extends RequestInit {
 async function fetchApi<T>(
   url, 
   options: IAppRequestInit, 
-  mapper: (data: any) => T): Promise<T> {
+  mapper: (data: any) => T): Promise<T> 
 ```
 
 К тому же мы можем убрать строку с инициализацией `options` так как теперь TS будет самостоятельно\*\*\* следить за тем, чтобы туда был передан аргумент.
