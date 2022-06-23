@@ -185,3 +185,6 @@ console.log(user.name);
 І наостанок маленька gif-ка того що ми отримали:
 
 ![demo](https://raw.githubusercontent.com/Drag13/ts-easy/master/demo.gif)
+
+
+Післямова: згідно з [останніми опитуваннями на StackOverflow](https://survey.stackoverflow.co/2022/) - TypeScript п'ята за популярністю мова.
