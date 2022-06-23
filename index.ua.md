@@ -71,7 +71,7 @@ async function fetchApi(url: API);
 
 Тепер наш URL це не просто довільний string, а елемент enum:
 
-![](https://raw.githubusercontent.com/Drag13/ts-easy/master/src/2enum/Enum.PNG)
+![](https://raw.githubusercontent.com/Drag13/ts-easy/master/src/2Enum/Enum.PNG)
 
 Якщо хтось випадково спробує використати звичайний `string` - TypeScript про це попередить., а білд просто впаде під час PR-у, або під час пушу, якщо ви користуєтесь хуками git-а для валідації коду.
 
